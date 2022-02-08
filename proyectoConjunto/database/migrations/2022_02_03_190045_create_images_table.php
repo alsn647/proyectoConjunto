@@ -18,6 +18,7 @@ class CreateImagesTable extends Migration
             $table->foreignId('product_id')->constrained();
             $table->string('path');
             $table->string('name');
+            $table->boolean('default', false);
             $table->timestamps();
         });
     }

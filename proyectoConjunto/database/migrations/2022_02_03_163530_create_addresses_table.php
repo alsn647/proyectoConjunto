@@ -21,6 +21,7 @@ class CreateAddressesTable extends Migration
             $table->string('patio');
             $table->string('puerta')->nullable();
             $table->string('cp');
+            $table->boolean('default', false);
             $table->timestamps();
 
         });
