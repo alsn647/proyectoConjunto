@@ -1,13 +1,13 @@
-<x-jet-form-section submit="updateProfileInformation">
+<x-jet-form-section >
     <x-slot name="title">
-        {{ __('Profile Information') }}
+        {{ __('Addresses') }}
     </x-slot>
 
     <x-slot name="description">
-        {{ __('Update your account\'s profile information and email address.') }}
+        {{ __('Añade, modifica o elimina tus direcciones.') }}
     </x-slot>
 
-    <x-slot name="form">
+    <x-slot name="formu">
         <!-- Profile Photo -->
         @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
             <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
@@ -64,13 +64,6 @@
             <x-jet-label for="email" value="{{ __('Email') }}" />
             <x-jet-input id="email" type="email" class="mt-1 block w-full" wire:model.defer="state.email" />
             <x-jet-input-error for="email" class="mt-2" />
-        </div>
-
-        <!-- Direcciones -->
-        <div class="col-span-6 sm:col-span-4">
-            <x-jet-label for="directions" value="{{ __('Direcciones') }}" />
-            <x-jet-input id="directions" type="text" class="mt-1 block w-full" wire:model.defer="state.name" autocomplete="name" />
-            <x-jet-input-error for="name" class="mt-2" />
         </div>
     </x-slot>
 

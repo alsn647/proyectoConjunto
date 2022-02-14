@@ -1,19 +1,24 @@
 @extends('layouts.layout')
 
+@push('scripts')
+    <script defer src="{{asset('js/validacionProducto.js')}}"></script>
+@endpush
 @section('titulo', 'Actualizar')
 
 @section('cuerpo')
-    <form action="{{route('products.update', $product->id)}}" method="post">
+    <form action="{{route('products.update', $product->id)}}" method="post" class="formClass">
         @csrf
-        @method('put')<!-- cambiar metodo? -->
+        @method('put')
+        <div>
+            <label for="name">Nombre: </label>
+            <input type="text" name="name" id="name" value="{{old('name')?old(''):$product->name}}">
+            <span id="errorName"> El campo Nombre no puede estar vacio</span>
+        </div>
+        @error('nombre') Error: {{$message}} @enderror
 
-        <label for="name">Nombre</label>
-        <input type="text" name="name" id="name" value="{{old('name')?old('name'):$product->name}}">
-        {{-- Comprueba si existe nombre anterior y si no pone el nombre del producto --}}
-        <br>
         <div>
             <label for="description">Descripcion: </label>
-            <textarea name="description" id="description" required cols="30" rows="10">
+            <textarea name="description" id="description" cols="30" rows="10">
                 {{ old('description')? old('description') : $product->description }}
             </textarea>
             <span id="errorDescription"> El campo Descripcion no puede estar vacio</span>
@@ -22,82 +27,63 @@
 
         <div>
             <label for="category">Categoria: </label>
-            <select name="category" id="category">
+            <select name="category" id="category" class="form-control">
                 @foreach ($categories as $category)
-                    <option value="{{$category->id}}">
-                        {{ $category->name }}
+                    <option value="{{$category->id}}" {{$category->id==$product->category->id?'selected':''}}>
+                        {{old('category')?old('category'):$category->name}}
                     </option>
                 @endforeach
             </select>
-
         </div>
+
         <div>
             <label for="price">Precio: </label>
-            <input type="number" step="any" name="price" id="price" min="0.1" value="{{old('price')?old('price'):$product->price}}" required>
+            <input type="number" min="0" step="any" name="price" id="price" value="{{old('price')?old(''):$product->price}}">
             <span id="errorPrice"> El campo Precio debe contener un numero positivo con un valor mayor a 0 y con un
                 maximo de dos decimales</span>
-            @error('precio') Error: {{$message}} @enderror
         </div>
+        @error('precio') Error: {{$message}} @enderror
 
         <div>
             <label for="discount">Descuento: </label>
-            <input type="number" min="0" max="100" step="any" name="discount" id="discount" value="{{old('discount')?old('discount'):$product->discount}}" required>
+            <input type="number" min="0" max="100" step="any" name="discount" id="discount" value="{{old('discount')?old(''):$product->discount}}">
             <span id="errorDiscount"> El campo Descuento debe contener un numero positivo con un valor mayor o igual a 0
                 y con un maximo de dos decimales</span>
-                @error('descuento') Error: {{$message}} @enderror
         </div>
+        @error('descuento') Error: {{$message}} @enderror
 
         <div>
             <label for="taxes">Impuesto: </label>
-            <input type="number" min="0" max="100" step="any" name="taxes" id="taxes" value="{{old('taxes')?old('taxes'):$product->taxes}}"  required>
+            <input type="number" min="0" max="100" step="any" name="taxes" id="taxes" value="{{old('taxes')?old(''):$product->tax}}">
             <span id="errorTaxes"> El campo Impuesto debe contener un numero positivo con un valor mayor o igual a 0 y
                 con un maximo de dos decimales</span>
-            @error('descuento') Error: {{$message}} @enderror
         </div>
+        @error('descuento') Error: {{$message}} @enderror
 
         <div>
             <label for="stock">Existencias: </label>
-            <input type="number" min="0" name="stock" id="stock" value="{{old('stock')?old('stock'):$product->stock}}"  required>
+            <input type="number" name="stock" id="stock" value="{{old('stock')?old(''):$product->stock}}">
             <span id="errorStock"> El campo Existencias debe contener un numero entero positivo con un valor mayor o
                 igual a 0</span>
             @error('existencias') Error: {{$message}} @enderror
         </div>
 
         <div>
+            <label for="visibilidad">Visibilidad</label>
+            <input type="checkbox" name="visibility" checked >
+        </div>
+        @error('imagen') Error: {{$message}} @enderror
+
+        <div>
             <label for="image">Subir imagen</label>
-            <input type="file" name="images[]" multiple required>
+            <input type="file" name="images[]" multiple>
             <span id="errorImage"> El campo Imagen debe contener un archivo de tipo imagen</span>
         </div>
         @error('imagen') Error: {{$message}} @enderror
 
         <div>
-            <label for="visibilidad">Visibilidad</label>
-            <input type="checkbox" name="visibilidad" checked >
+            <label for="guardar"></label>
+            <input type="submit" value="Guardar" name="guardar" id="guardar" required>
         </div>
-        @error('imagen') Error: {{$message}} @enderror
-
-        <div>
-            <label for="enviar"></label>
-            <input type="submit" value="Enviar" name="enviar" id="enviar" required>
-        </div>
-
-
-{{--
-        <label for="contenido">Contenido</label>
-        <textarea name="contenido" id="contenido" cols="30" rows="10">
-            {{ old('contenido')? old('contenido') : $product->description }}
-        </textarea>
-        <br>
-
-        <label for="autor">Autor</label>
-        <select name="autor" id="autor" class="form-control">
-            @foreach ($categories as $category)
-                <option value="{{$category->id}}" {{$category->id==$product->category->id?'selected':''}}>
-                    {{old('autor')?old('autor'):$category->name}}
-                </option>
-            @endforeach
-        </select>
-        <br> <br>
-        <input type="submit" value="Guardar"> --}}
     </form>
 @endsection

@@ -1,29 +1,18 @@
 @extends('layouts.layout')
 
+@push('scripts')
+    <script defer src="/js/index.js"></script>
+@endpush
+<link rel="stylesheet" href="/css/style.css">
 @section('titulo', 'Listado de productos')
 
 @section('cuerpo')
 
-     <h2>Listado de productos</h2>
-     <h3> nombre:</h3>
-     <main>
-        <div class="products-container">
-            @forelse ($products as $product)
-                <div class="product">
-                    <div class="product-img-container">
+    <main>
+        <div class="textContent">
 
-                        @foreach ($product->images as $imagen)
-                            @if ($imagen->default == 1)
-                                <img src="{{asset('images/'.$imagen->path)}}" alt="">
-                            @endif
-                            <a href="{{route('products.show', $product->id)}}"> {{$product->name}}</a>
-                        @endforeach
-
-                        </div>
-                    </div>
-            @empty
-            @endforelse
         </div>
-     </main>
+        <button id="loadButton">Cargar Mas</button>
+    </main>
 
 @endsection

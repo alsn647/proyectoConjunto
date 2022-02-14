@@ -1,19 +1,16 @@
-.products-container{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-
-.product{
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-}
-
-.img-prod{
-    width: 100%;
-}
-
-span{
+span {
+    color: red;
     display: none;
+}
+
+formClass{
+    display: none;
+}
+
+#resetButton {
+    display:none;
+}
+
+#loadButton {
+    display:block;
 }

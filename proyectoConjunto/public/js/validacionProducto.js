@@ -1,6 +1,38 @@
-let form = document.querySelector('.formClass');
+// async function fetchCategoriesJSON() {
+//     let categories = await fetch("{{ route('categoriesApi.index') }}");
+//     console.log(categories);
+//     let categoriesJSON = await categories.json();
+//     console.log(categoriesJSON);
+//     return categoriesJSON;
+// }
 
-document.querySelector('.formClass').onsubmit = function (event) {
+// fetchCategoriesJSON().then(categories => {
+//     for (let category of categories) {
+//         let option = document.createElement('option');
+//         option.setAttribute('value', category.id);
+//         option.textContent = category.name;
+//         form.elements['category'].append(option);
+//     }
+// })
+let form = document.querySelector('.formClass');
+// let createProductButton = document.querySelector('#createProductButton');
+// let submitButton = document.querySelector('#submitButton');
+// let cancelButton = document.querySelector('#cancelButton');
+
+
+
+// createProductButton.onclick = function() {
+//     form.style.display = 'block';
+//     createProductButton.style.display = 'none';
+// }
+
+// cancelButton.onclick = function() {
+//     document.querySelector('#resetButton').click();
+//     form.style.display = 'none';
+//     createProductButton.style.display = 'inline';
+// }
+
+document.querySelector('.formClass').onsubmit = function(event) {
     let correctData = true;
     event.preventDefault()
     if (form.elements['name'].value == false) {
@@ -16,25 +48,34 @@ document.querySelector('.formClass').onsubmit = function (event) {
     } else {
         form.querySelector('#errorDescription').style.display = 'none';
     }
-    if (isNaN(form.elements['price'].value) || form.elements['price'].value < 0 || !checkDecimals(form.elements['price'].value)) {
+    // if (form.elements['category'].value == false) {
+    //     form.querySelector('#errorCategory').style.display = 'inline';
+    // } else {
+    //     form.querySelector('#errorCategory').style.display = 'none';
+    // }
+    if (isNaN(form.elements['price'].value) || form.elements['price'].value < 0 || !checkDecimals(form.elements[
+            'price'].value)) {
         correctData = false;
         form.querySelector('#errorPrice').style.display = 'inline';
     } else {
         form.querySelector('#errorPrice').style.display = 'none';
     }
-    if (isNaN(form.elements['discount'].value) || form.elements['discount'].value < 0 || form.elements['discount'].value > 100 || !checkDecimals(form.elements['discount'].value)) {
+    if (isNaN(form.elements['discount'].value) || form.elements['discount'].value < 0 || form.elements[
+            'discount'].value > 100 || !checkDecimals(form.elements['discount'].value)) {
         correctData = false;
         form.querySelector('#errorDiscount').style.display = 'inline';
     } else {
         form.querySelector('#errorDiscount').style.display = 'none';
     }
-    if (isNaN(form.elements['taxes'].value) || form.elements['taxes'].value < 0 || form.elements['taxes'].value > 100 || !checkDecimals(form.elements['taxes'].value)) {
+    if (isNaN(form.elements['taxes'].value) || form.elements['taxes'].value < 0 || form.elements['taxes']
+        .value > 100 || !checkDecimals(form.elements['taxes'].value)) {
         correctData = false;
         form.querySelector('#errorTaxes').style.display = 'inline';
     } else {
         form.querySelector('#errorTaxes').style.display = 'none';
     }
-    if (isNaN(form.elements['stock'].value) || form.elements['stock'].value < 0 || form.elements['stock'].value.includes('.')) {
+    if (isNaN(form.elements['stock'].value) || form.elements['stock'].value < 0 || form.elements['stock'].value
+        .includes('.')) {
         correctData = false;
         form.querySelector('#errorStock').style.display = 'inline';
     } else {
@@ -48,7 +89,19 @@ document.querySelector('.formClass').onsubmit = function (event) {
     if (correctData === true) {
         form.elements['name'].value = removeWhiteSpaces(form.elements['name'].value);
         form.elements['description'].value = removeWhiteSpaces(form.elements['description'].value);
-        form.submit();
+        async function submitForm() {
+            let response = await fetch(form.action,{method:'post', body: new FormData(form)});
+            console.log(response);
+            let product = await response.json();
+            console.log(product)
+            return product;
+        }
+        submitForm().then(product => {
+            let p = document.createElement('p');
+            p.textContent = 'Nombre: ' + product.name + ' Categoria: ' + product.category.name;
+            document.body.append(p);
+
+        });
     }
     correctData = true;
 }

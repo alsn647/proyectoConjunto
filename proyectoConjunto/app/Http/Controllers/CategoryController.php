@@ -39,12 +39,12 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $post = new Category();
-        $post->name = $request->get('name');
-        $post->description = $request->get('description');
-        $post->save();
+        $category = new Category();
+        $category->name = $request->get('name');
+        $category->description = $request->get('description');
+        $category->save();
 
-        return view('posts.guardado', compact('post'));
+        return view('categories.guardado', compact('category'));
     }
 
     /**

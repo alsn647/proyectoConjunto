@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+use App\Models\Image;
 use App\Http\Requests\PostRequest;
 use App\Models\Category;
 use App\Models\Product;
-use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Http\Requests\ProductRequest;
@@ -42,11 +43,10 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        $formInput=$request->all();
-        $images=array();
 
         $product = new Product();
         $product->name = $request->get('name');
+        //$product->category_id = $request->get('category');// no se cual
         $product->description = $request->get('description');
         $product->category()->associate(Category::findOrFail($request->get('category')));
         $product->price = $request->get('price');
@@ -54,34 +54,6 @@ class ProductController extends Controller
         $product->discount = $request->get('discount');
         $product->stock = $request->get('stock');
         $product->save();
-//subir esto arriba a ver si funca
-//migraciones nuevas para ponerle visibilidad a la tabla products
-        if($files=$request->file('images')){
-            foreach($files as $file){
-                $name=$file->hashName();
-                $file->move('images',$name);
-                $images[]=$name;
-                Image::create(array_merge($formInput,
-                [
-                    'product_id' => $product -> id,
-                    'url' => ($name),
-                    'path' => ($name),
-                    'default' => 0,
-                    ],
-                ));
-            }
-        }
-
-        // Codigo anterior
-        /* $product = new Product();
-        $product->name = $request->get('name');
-        $product->description = $request->get('description');
-        $product->category()->associate(Category::findOrFail($request->get('category')));
-        $product->price = $request->get('price');
-        $product->tax = $request->get('taxes');
-        $product->discount = $request->get('discount');
-        $product->stock = $request->get('stock');
-        $product->save(); */
 
         return view('products.guardado', compact('product'));
     }
@@ -94,7 +66,8 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return view('products.show', compact('product'));
+        $user = Auth::user();
+        return view('products.show', compact('product', 'user'));
     }
 
     /**
@@ -105,7 +78,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        $categories = Product::all();
+        $categories = Category::all();
         return view('products.edit', compact('categories', 'product'));
     }
 
@@ -121,20 +94,22 @@ class ProductController extends Controller
         $formInput=$request->all();
         $images=array();
 
-
-
         $product->name = $request->get('name');
-        $product->description = $request->get('description');
+        $request->description = $request->get('description');
         $product->category()->associate(Category::findOrFail($request->get('category')));
         $product->price = $request->get('price');
-        $product->discount = $request->get('discount');
         $product->tax = $request->get('taxes');
+        $product->discount = $request->get('discount');
         $product->stock = $request->get('stock');
-        $product->save();
+        if ($request->get('visibility') == 'accepted') {
+            $product->visibility = 1;
+        }else{
+            $product->visibility = 0;
+        }
 
+            $product->save();
 
-
-         if($files=$request->file('images')){
+        if($files=$request->file('images')){
             foreach($files as $file){
                 $name=$file->hashName();
                 $file->move('images',$name);
@@ -145,11 +120,10 @@ class ProductController extends Controller
                     'url' => ($name),
                     'path' => ($name),
                     'default' => 0,
-                ],
+                    ],
                 ));
             }
         }
-
 
         return view('products.modificado', compact('product'));
     }

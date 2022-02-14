@@ -18,6 +18,9 @@ class User extends Authenticatable
     use Notifiable;
     use TwoFactorAuthenticatable;
 
+    public function directions(){
+        return $this->hasMany(Address::class);
+    }
     /**
      * The attributes that are mass assignable.
      *

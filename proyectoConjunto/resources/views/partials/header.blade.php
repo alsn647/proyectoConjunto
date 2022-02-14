@@ -15,8 +15,8 @@
 </div>
 <nav>
     <ul class="categorias">
-        {{-- <li><a href="{{route('categories.show', $products->category_id)}}"> Juegos </a></li> --}}
-        <li><a href=""> Complementos </a></li>
-        <li><a href=""> Libros </a></li>
+        <li><a href="#" data-value=1 class='categoria'> Juegos </a></li>
+        <li><a href="#" data-value=2 class='categoria'> Complementos </a></li>
+        <li><a href="#" data-value=3 class='categoria'> Libros </a></li>
     </ul>
 </nav>

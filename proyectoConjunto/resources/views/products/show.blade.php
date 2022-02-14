@@ -14,15 +14,20 @@
     <p>
         Fecha: {{$product->created_at}}
     </p>
-    {{-- <form action="{{route('posts.destroy', $post->id)}}" method="post">
-        @csrf
-        @method('delete')
-        <input type="submit" value="Eliminar">
-    </form> --}}
     <p>
         @foreach ($product->images as $imagen)
             <img src="{{asset('images/'.$imagen->path)}}" alt="">
         @endforeach
     </p>
-    <a href="{{route('products.edit', $product->id)}}">Editar</a>
+    {{-- <form action="{{route('posts.destroy', $post->id)}}" method="post">
+        @csrf
+        @method('delete')
+        <input type="submit" value="Eliminar">
+    </form> --}}
+    @if ($user->role == 'Admin')
+        <a href="{{route('products.edit', $product->id)}}">Editar</a>
+    @else
+        añadir al carrito
+    @endif
+
 @endsection

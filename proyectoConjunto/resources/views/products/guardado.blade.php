@@ -3,6 +3,6 @@
 @section('titulo', 'Guardado')
 
 @section('cuerpo')
-    Post guardado <br>
-    Titulo:  {{$product->name}}
+    Producto guardado <br>
+    Nombre:  {{$product->name}}
 @endsection

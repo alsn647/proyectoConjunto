@@ -17,11 +17,13 @@ class CreateProductsTable extends Migration
             $table->id();
             $table->string('name', 30);
             $table->foreignId('category_id')->constrained();
-            $table->string('description', 100);
+            $table->string('description', 1000);
             $table->double('price');
             $table->double('tax');
             $table->double('discount');
             $table->double('stock');
+            $table->boolean('visibility')->default('1');
+
             $table->timestamps();
         });
     }
