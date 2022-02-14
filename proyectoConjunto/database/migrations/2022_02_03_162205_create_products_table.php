@@ -23,6 +23,7 @@ class CreateProductsTable extends Migration
             $table->double('discount');
             $table->double('stock');
             $table->boolean('visibility')->default('1');
+            $table->boolean('offer')->default('0');
 
             $table->timestamps();
         });
