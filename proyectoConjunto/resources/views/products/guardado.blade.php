@@ -1,8 +1,8 @@
-@extends('layout')
+@extends('layouts.layout')
 
 @section('titulo', 'Guardado')
 
 @section('cuerpo')
     Post guardado <br>
-    Titulo:  {{$post->titulo}}
+    Titulo:  {{$product->name}}
 @endsection

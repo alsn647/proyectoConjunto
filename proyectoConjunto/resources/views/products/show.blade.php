@@ -19,5 +19,10 @@
         @method('delete')
         <input type="submit" value="Eliminar">
     </form> --}}
+    <p>
+        @foreach ($product->images as $imagen)
+            <img src="{{asset('images/'.$imagen->path)}}" alt="">
+        @endforeach
+    </p>
     <a href="{{route('products.edit', $product->id)}}">Editar</a>
 @endsection

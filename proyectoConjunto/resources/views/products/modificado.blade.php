@@ -1,8 +1,8 @@
-@extends('layout')
+@extends('layouts.layout')
 
 @section('titulo', 'Modificado')
 
 @section('cuerpo')
-    Post modificado <br>
-    Titulo:  {{$post->titulo}}
+    Producto modificado <br>
+    Titulo:  {{$product->name}}
 @endsection

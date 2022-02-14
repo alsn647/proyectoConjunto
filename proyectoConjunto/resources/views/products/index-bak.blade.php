@@ -11,17 +11,12 @@
             @forelse ($products as $product)
                 <div class="product">
                     <div class="product-img-container">
-
-                        @foreach ($product->images as $imagen)
-                            @if ($imagen->default == 1)
-                                <img src="{{asset('images/'.$imagen->path)}}" alt="">
-                            @endif
-                            <a href="{{route('products.show', $product->id)}}"> {{$product->name}}</a>
-                        @endforeach
-
-                        </div>
+                        <img src="{{ asset('img/img3-S.jpg') }}" class="img-prod" alt="description of myimage">
                     </div>
+                    <a href="{{route('products.show', $product->id)}}"> {{$product->name}}</a>
+                </div>
             @empty
+
             @endforelse
         </div>
      </main>
