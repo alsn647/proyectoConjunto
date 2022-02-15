@@ -1,12 +1,12 @@
 @extends('layouts.layout')
 
 @push('scripts')
-    <script defer src="{{asset('js/validacionProducto.js')}}"></script>
+    <script defer src="{{asset('js/validacionEdit.js')}}"></script>
 @endpush
 @section('titulo', 'Actualizar')
 
 @section('cuerpo')
-    <form action="{{route('products.update', $product->id)}}" method="post" class="formClass">
+    <form action="{{route('products.update', $product->id)}}" enctype="multipart/form-data" method="post" class="formClass">
         @csrf
         @method('put')
         <div>

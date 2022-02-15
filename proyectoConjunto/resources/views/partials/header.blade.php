@@ -15,8 +15,8 @@
 </div>
 <nav>
     <ul class="categorias">
-        <li><a href="#" data-value=1 class='categoria'> Juegos </a></li>
-        <li><a href="#" data-value=2 class='categoria'> Complementos </a></li>
-        <li><a href="#" data-value=3 class='categoria'> Libros </a></li>
+        <li><a href="#" data-value=1 class='categoria'> Libros </a></li>
+        <li><a href="#" data-value=2 class='categoria'> Juegos </a></li>
+        <li><a href="#" data-value=3 class='categoria'> Complementos </a></li>
     </ul>
 </nav>

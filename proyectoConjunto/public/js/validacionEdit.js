@@ -32,7 +32,7 @@ let form = document.querySelector('.formClass');
 //     createProductButton.style.display = 'inline';
 // }
 
-document.querySelector('.formClass').onsubmit = function (event) {
+document.querySelector('.formClass').onsubmit = function(event) {
     let correctData = true;
     event.preventDefault()
     if (form.elements['name'].value == false) {
@@ -54,14 +54,14 @@ document.querySelector('.formClass').onsubmit = function (event) {
     //     form.querySelector('#errorCategory').style.display = 'none';
     // }
     if (isNaN(form.elements['price'].value) || form.elements['price'].value < 0 || !checkDecimals(form.elements[
-        'price'].value)) {
+            'price'].value)) {
         correctData = false;
         form.querySelector('#errorPrice').style.display = 'inline';
     } else {
         form.querySelector('#errorPrice').style.display = 'none';
     }
     if (isNaN(form.elements['discount'].value) || form.elements['discount'].value < 0 || form.elements[
-        'discount'].value > 100 || !checkDecimals(form.elements['discount'].value)) {
+            'discount'].value > 100 || !checkDecimals(form.elements['discount'].value)) {
         correctData = false;
         form.querySelector('#errorDiscount').style.display = 'inline';
     } else {
@@ -87,21 +87,7 @@ document.querySelector('.formClass').onsubmit = function (event) {
     //     form.querySelector('#errorImage').style.display = 'none';
     // }
     if (correctData === true) {
-        form.elements['name'].value = removeWhiteSpaces(form.elements['name'].value);
-        form.elements['description'].value = removeWhiteSpaces(form.elements['description'].value);
-        async function submitForm() {
-            let response = await fetch(form.action, { method: 'post', body: new FormData(form) });
-            console.log(response);
-            let product = await response.json();
-            console.log(product)
-            return product;
-        }
-        submitForm().then(product => {
-            let p = document.createElement('p');
-            p.textContent = 'Nombre: ' + product.name + ' Categoria: ' + product.category.name;
-            document.body.append(p);
-
-        });
+        form.submit(form.action,{method:'post', body: new FormData(form)});
     }
     correctData = true;
 }

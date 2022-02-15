@@ -22,10 +22,11 @@ class ProductApiController extends Controller
     public function index($counter)
     {
         //
-        $products = Product::orderBy('id', 'asc')
-                        ->skip($counter)
-                        ->take(10)
-                        ->get();
+        $products = Product::where('visibility', 1)
+            ->orderBy('id', 'asc')
+            ->skip($counter)
+            ->take(10)
+            ->get();
         $images = Image::get();
 
         return response()->json([$products, $images], 200);
@@ -39,8 +40,8 @@ class ProductApiController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        $formInput=$request->all();
-        $images=array();
+        $formInput = $request->all();
+        $images = array();
 
         $product = new Product();
         $product->name = $request->get('name');
@@ -52,17 +53,18 @@ class ProductApiController extends Controller
         $product->stock = $request->get('stock');
         $product->save();
 
-        if($files=$request->file('images')){
-            foreach($files as $file){
-                $name=$file->hashName();
-                $file->move('images',$name);
-                $images[]=$name;
-                Image::create(array_merge($formInput,
-                [
-                    'product_id' => $product -> id,
-                    'url' => ($name),
-                    'path' => ($name),
-                    'default' => 0,
+        if ($files = $request->file('images')) {
+            foreach ($files as $file) {
+                $name = $file->hashName();
+                $file->move('images', $name);
+                $images[] = $name;
+                Image::create(array_merge(
+                    $formInput,
+                    [
+                        'product_id' => $product->id,
+                        'url' => ($name),
+                        'path' => ($name),
+                        'default' => 0,
                     ],
                 ));
             }
@@ -108,11 +110,14 @@ class ProductApiController extends Controller
     public function showProducts($id, $counter)
     {
         $products = Product::where('category_id', $id)
-                        ->orderBy('id', 'asc')
-                        ->skip($counter)
-                        ->take(2)
-                        ->get();
-        return response()->json($products, 200);
-    }
+            ->where('visibility', 1)
+            ->orderBy('id', 'asc')
+            ->skip($counter)
+            ->take(2)
+            ->get();
+        $images = Image::get();
 
+
+        return response()->json([$products, $images], 200);
+    }
 }

@@ -91,8 +91,8 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, Product $product)
     {
-        $formInput=$request->all();
-        $images=array();
+        $formInput = $request->all();
+        $images = array();
 
         $product->name = $request->get('name');
         $request->description = $request->get('description');
@@ -101,25 +101,26 @@ class ProductController extends Controller
         $product->tax = $request->get('taxes');
         $product->discount = $request->get('discount');
         $product->stock = $request->get('stock');
-        if ($request->get('visibility') == 'accepted') {
+        if ($request->has('visibility')) {
             $product->visibility = 1;
-        }else{
+        } else {
             $product->visibility = 0;
         }
 
-            $product->save();
+        $product->save();
 
-        if($files=$request->file('images')){
-            foreach($files as $file){
-                $name=$file->hashName();
-                $file->move('images',$name);
-                $images[]=$name;
-                Image::create(array_merge($formInput,
-                [
-                    'product_id' => $product -> id,
-                    'url' => ($name),
-                    'path' => ($name),
-                    'default' => 0,
+        if ($files = $request->file('images')) {
+            foreach ($files as $file) {
+                $name = $file->hashName();
+                $file->move('images', $name);
+                $images[] = $name;
+                Image::create(array_merge(
+                    $formInput,
+                    [
+                        'product_id' => $product->id,
+                        'url' => ($name),
+                        'path' => ($name),
+                        'default' => 0,
                     ],
                 ));
             }

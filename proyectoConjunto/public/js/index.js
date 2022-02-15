@@ -45,8 +45,9 @@ fetchProductsIndexJSON(counter).then(productsJSON => {
         stock.textContent = 'Stock: ' + product.stock;
         div.append(img, a, price, stock);
         document.querySelector('.textContent').append(div);
-        counter = counter + 2;
     }
+    counter = counter + 10;
+
 })
 
 
@@ -208,21 +209,30 @@ for (let category of categories) {
             currentCategory = event.target.getAttribute('data-value');
             document.querySelector('.textContent').textContent = '';
             counter = 0;
-            fetchProductsJSON(currentCategory).then(jsonProducts => {
-                for (let product of jsonProducts) {
+            fetchProductsJSON(currentCategory).then(productsJSON => {
+                for (let product of productsJSON[0]) {
+                    //muestra todos los productos visibles y monta la estructura
                     let div = document.createElement('div');
-                    let title = document.createElement('strong');
-                    title.textContent = 'Nombre: ' + product.name;
+                    let img = document.createElement('img');
+                    // Busca y muestra la imagen por defecto
+                    for (let i = 0; i < productsJSON[1].length; i++) {
+                        if (productsJSON[1][i].product_id === product.id && productsJSON[1][i].default == 1) {
+                            let prod_img = productsJSON[1][i];
+                            img.src = "/images/" + prod_img.path;
+                        }
+                    }
+
+                    div.classList.add('flexContainer', 'productContainer');
+                    let a = document.createElement('a');
+                    a.textContent = 'Nombre: ' + product.name;
+                    a.href = `/products/${product.id}`;
                     // let category = document.createElement('p');
                     // category.textContent = 'Categoria ' + product.category.name;
                     let price = document.createElement('p');
                     price.textContent = 'Precio: ' + product.price + '€';
                     let stock = document.createElement('p');
                     stock.textContent = 'Stock: ' + product.stock;
-                    div.append(title);
-                    // div.append(category);
-                    div.append(price);
-                    div.append(stock);
+                    div.append(img, a, price, stock);
                     document.querySelector('.textContent').append(div);
                 }
                 counter = counter + 2;
@@ -259,30 +269,40 @@ document.querySelector('#loadButton').onclick = function () {
                 stock.textContent = 'Stock: ' + product.stock;
                 div.append(img, a, price, stock);
                 document.querySelector('.textContent').append(div);
-                counter = counter + 2;
+
             }
+            counter = counter + 10;
         })
     } else {
 
-        fetchProductsJSON(currentCategory).then(jsonProducts => {
-            for (let product of jsonProducts) {
+        fetchProductsJSON(currentCategory).then(productsJSON => {
+            for (let product of productsJSON[0]) {
+                //muestra todos los productos visibles y monta la estructura
                 let div = document.createElement('div');
-                let title = document.createElement('strong');
-                title.textContent = 'Nombre: ' + product.name;
+                let img = document.createElement('img');
+                // Busca y muestra la imagen por defecto
+                for (let i = 0; i < productsJSON[1].length; i++) {
+                    if (productsJSON[1][i].product_id === product.id && productsJSON[1][i].default == 1) {
+                        let prod_img = productsJSON[1][i];
+                        img.src = "/images/" + prod_img.path;
+                    }
+                }
+
+                div.classList.add('flexContainer', 'productContainer');
+                let a = document.createElement('a');
+                a.textContent = 'Nombre: ' + product.name;
+                a.href = `/products/${product.id}`;
                 // let category = document.createElement('p');
                 // category.textContent = 'Categoria ' + product.category.name;
                 let price = document.createElement('p');
                 price.textContent = 'Precio: ' + product.price + '€';
                 let stock = document.createElement('p');
                 stock.textContent = 'Stock: ' + product.stock;
-                div.append(title);
-                // div.append(category);
-                div.append(price);
-                div.append(stock);
+                div.append(img, a, price, stock);
                 document.querySelector('.textContent').append(div);
             }
             counter = counter + 2;
-        });
+        })
     }
 }
 
@@ -291,7 +311,6 @@ async function fetchProductsJSON(category) {
     // let url = "{{ route('productsApi.showProducts', ['id' => ':category', 'counter' => ':counter']) }}";
     // url = url.replace(':category', category);
     // url = url.replace(':counter', counter);
-    console.log(url);
     let products = await fetch(`/api/products/${category}/${counter}`);
     console.log(products);
     let jsonProducts = await products.json();
